@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useActiveSection } from '@/hooks/useScrollAnimation';
+import { ScrollAnimateWrapper } from '@/components/ScrollAnimateWrapper';
 import { studios } from '@/data/studios';
 import { Studio } from '@/types';
 import StudioCard from '@/components/StudioCard';
@@ -11,6 +13,7 @@ import Footer from '@/components/Footer';
 export default function Home() {
   const [selectedStudio, setSelectedStudio] = useState<Studio | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const activeSection = useActiveSection();
 
   const handleReserve = (studio: Studio) => {
     setSelectedStudio(studio);
@@ -39,16 +42,44 @@ export default function Home() {
             <div className="flex items-center space-x-8">
               {/* Main Navigation */}
               <nav className="hidden md:flex items-center space-x-8">
-                <a href="#studios" className="nav-item text-white hover:text-misk-yellow transition-colors">
+                <a 
+                  href="#studios" 
+                  className={`nav-item text-white hover:text-misk-yellow transition-colors ${activeSection === 'studios' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('studios')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   Nos Studios
                 </a>
-                <a href="#about" className="nav-item text-white hover:text-misk-yellow transition-colors">
+                <a 
+                  href="#about" 
+                  className={`nav-item text-white hover:text-misk-yellow transition-colors ${activeSection === 'about' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   À propos
                 </a>
-                <a href="#services" className="nav-item text-white hover:text-misk-yellow transition-colors">
+                <a 
+                  href="#services" 
+                  className={`nav-item text-white hover:text-misk-yellow transition-colors ${activeSection === 'services' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   Services
                 </a>
-                <a href="#contact" className="nav-item text-white hover:text-misk-yellow transition-colors">
+                <a 
+                  href="#contact" 
+                  className={`nav-item text-white hover:text-misk-yellow transition-colors ${activeSection === 'contact' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   Contact
                 </a>
               </nav>
@@ -103,12 +134,20 @@ export default function Home() {
                   style={{backgroundColor: '#fada00'}}
                   onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e8c400'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fada00'}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('studios')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Découvrir nos studios
                 </a>
                 <a 
                   href="#contact" 
                   className="border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-black transition-all duration-300 text-center font-montserrat hover-lift"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Nous contacter
                 </a>
@@ -149,7 +188,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white relative overflow-hidden">
+      <section id="about" className="py-16 bg-white relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-yellow-100/30 blur-xl animate-float"></div>
@@ -157,17 +196,17 @@ export default function Home() {
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-12 animate-on-load animate-fade-in-up">
+          <ScrollAnimateWrapper className="text-center mb-12">
             <h3 className="text-3xl font-bold text-gray-900 mb-4 font-sf">
               Pourquoi choisir Misk Studios ?
             </h3>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-on-load animate-fade-in-up animation-delay-200">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Des installations modernes et un service professionnel pour donner vie à vos projets créatifs
             </p>
-          </div>
+          </ScrollAnimateWrapper>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center feature-card p-6 rounded-xl bg-white shadow-lg animate-on-load animate-scale-in animation-delay-100">
+            <ScrollAnimateWrapper delay={100} className="text-center feature-card p-6 rounded-xl bg-white shadow-lg">
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 feature-icon">
                 <svg className="w-8 h-8" style={{color: '#fada00'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -177,9 +216,9 @@ export default function Home() {
               <p className="text-gray-600 leading-relaxed">
                 Matériel audio et vidéo de dernière génération pour une qualité irréprochable
               </p>
-            </div>
+            </ScrollAnimateWrapper>
             
-            <div className="text-center feature-card p-6 rounded-xl bg-white shadow-lg animate-on-load animate-scale-in animation-delay-200">
+            <ScrollAnimateWrapper delay={200} className="text-center feature-card p-6 rounded-xl bg-white shadow-lg">
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 feature-icon">
                 <svg className="w-8 h-8" style={{color: '#fada00'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -189,9 +228,9 @@ export default function Home() {
               <p className="text-gray-600 leading-relaxed">
                 Studios traités acoustiquement pour un enregistrement optimal sans parasites
               </p>
-            </div>
+            </ScrollAnimateWrapper>
             
-            <div className="text-center feature-card p-6 rounded-xl bg-white shadow-lg animate-on-load animate-scale-in animation-delay-300">
+            <ScrollAnimateWrapper delay={300} className="text-center feature-card p-6 rounded-xl bg-white shadow-lg">
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 feature-icon">
                 <svg className="w-8 h-8" style={{color: '#fada00'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 11-9.75 9.75A9.75 9.75 0 0112 2.25z" />
@@ -201,7 +240,7 @@ export default function Home() {
               <p className="text-gray-600 leading-relaxed">
                 Assistance technique disponible pour vous accompagner dans vos productions
               </p>
-            </div>
+            </ScrollAnimateWrapper>
           </div>
         </div>
       </section>
@@ -209,42 +248,49 @@ export default function Home() {
       {/* Studios Section */}
       <section id="studios" className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <ScrollAnimateWrapper className="text-center mb-12">
             <h3 className="text-3xl font-bold text-gray-900 mb-4 font-sf">
               Nos Studios Disponibles
             </h3>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Choisissez l&apos;espace qui correspond le mieux à votre projet créatif
             </p>
-          </div>
+          </ScrollAnimateWrapper>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {studios.map((studio) => (
-              <StudioCard
-                key={studio.id}
-                studio={studio}
-                onReserve={handleReserve}
-              />
+            {studios.map((studio, index) => (
+              <ScrollAnimateWrapper key={studio.id} delay={index * 100}>
+                <StudioCard
+                  studio={studio}
+                  onReserve={handleReserve}
+                />
+              </ScrollAnimateWrapper>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16" style={{backgroundColor: '#fada00'}}>
+      <section id="services" className="py-16" style={{backgroundColor: '#fada00'}}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-3xl font-bold text-black mb-4 font-sf">
-            Prêt à concrétiser votre projet ?
-          </h3>
-          <p className="text-xl text-gray-800 mb-8 max-w-2xl mx-auto">
-            Contactez-nous dès aujourd&apos;hui pour discuter de vos besoins et réserver le studio parfait pour votre création.
-          </p>
-          <a
-            href="#contact"
-            className="inline-block bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors font-montserrat"
-          >
-            Contactez-nous
-          </a>
+          <ScrollAnimateWrapper>
+            <h3 className="text-3xl font-bold text-black mb-4 font-sf">
+              Prêt à concrétiser votre projet ?
+            </h3>
+            <p className="text-xl text-gray-800 mb-8 max-w-2xl mx-auto">
+              Contactez-nous dès aujourd&apos;hui pour discuter de vos besoins et réserver le studio parfait pour votre création.
+            </p>
+            <a
+              href="#contact"
+              className="inline-block bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors font-montserrat"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Contactez-nous
+            </a>
+          </ScrollAnimateWrapper>
         </div>
       </section>
 
