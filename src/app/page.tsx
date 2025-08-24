@@ -37,22 +37,10 @@ export default function Home() {
             
             {/* Right side - Navigation and Controls */}
             <div className="flex items-center space-x-8">
-              {/* Live indicators similar to the screenshot */}
-              <div className="hidden lg:flex items-center space-x-6">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                  <span className="text-white text-sm font-medium">EN DIRECT</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-misk-yellow rounded-full"></div>
-                  <span className="text-white text-sm font-medium">STUDIOS</span>
-                </div>
-              </div>
-              
               {/* Main Navigation */}
               <nav className="hidden md:flex items-center space-x-8">
                 <a href="#studios" className="nav-item text-white hover:text-misk-yellow transition-colors">
-                  Studios
+                  Nos Studios
                 </a>
                 <a href="#about" className="nav-item text-white hover:text-misk-yellow transition-colors">
                   À propos
@@ -96,22 +84,22 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-black to-gray-900 text-white">
+      <section className="bg-gradient-to-br from-black via-gray-900 to-black text-white animate-gradient overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6 font-sf">
+            <div className="animate-on-load animate-fade-in-left">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-6 font-sf animate-on-load animate-fade-in-up">
                 Studios Professionnels
-                <span className="block" style={{color: '#fada00'}}>à Tunis</span>
+                <span className="block animate-on-load animate-fade-in-up animation-delay-200" style={{color: '#fada00'}}>à Tunis</span>
               </h2>
-              <p className="text-xl text-gray-200 mb-8 leading-relaxed font-sf">
+              <p className="text-xl text-gray-200 mb-8 leading-relaxed font-sf animate-on-load animate-fade-in-up animation-delay-300">
                 Louez des espaces créatifs équipés avec du matériel de pointe pour vos projets de 
                 podcast, enregistrement, streaming et production. Qualité professionnelle garantie.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 animate-on-load animate-fade-in-up animation-delay-400">
                 <a 
                   href="#studios" 
-                  className="px-6 py-3 rounded-lg font-medium transition-colors text-center text-black font-semibold font-montserrat"
+                  className="px-6 py-3 rounded-lg font-medium transition-all duration-300 text-center text-black font-semibold font-montserrat hover-scale animate-glow-pulse"
                   style={{backgroundColor: '#fada00'}}
                   onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e8c400'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fada00'}
@@ -120,86 +108,97 @@ export default function Home() {
                 </a>
                 <a 
                   href="#contact" 
-                  className="border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-black transition-colors text-center font-montserrat"
+                  className="border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-black transition-all duration-300 text-center font-montserrat hover-lift"
                 >
                   Nous contacter
                 </a>
               </div>
             </div>
-            <div className="relative">
-              <div className="relative h-96 w-full rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative animate-on-load animate-fade-in-right animation-delay-200">
+              <div className="relative h-96 w-full rounded-2xl overflow-hidden shadow-2xl hover-lift">
                 <Image
                   src="https://picsum.photos/seed/hero-studio/800/600"
                   alt="Studio professionnel Misk Studios"
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                 />
+                {/* Gradient overlay for better contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
-              {/* Floating cards */}
-              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg">
+              {/* Floating cards with animations */}
+              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg animate-float hover-lift">
                 <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                   <span className="text-gray-800 font-medium">Disponible 24/7</span>
                 </div>
               </div>
-              <div className="absolute -top-6 -right-6 bg-white p-4 rounded-lg shadow-lg">
+              <div className="absolute -top-6 -right-6 bg-white p-4 rounded-lg shadow-lg animate-float hover-lift" style={{animationDelay: '1s'}}>
                 <div className="text-gray-800">
-                  <div className="text-2xl font-bold" style={{color: '#fada00'}}>4</div>
+                  <div className="text-2xl font-bold transition-all duration-300 hover:scale-110" style={{color: '#fada00'}}>4</div>
                   <div className="text-sm">Studios</div>
                 </div>
               </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-r from-yellow-400/10 to-yellow-600/10 blur-3xl animate-pulse"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+      <section className="py-16 bg-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-yellow-100/30 blur-xl animate-float"></div>
+          <div className="absolute bottom-10 right-10 w-24 h-24 rounded-full bg-yellow-200/40 blur-xl animate-float" style={{animationDelay: '2s'}}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12 animate-on-load animate-fade-in-up">
             <h3 className="text-3xl font-bold text-gray-900 mb-4 font-sf">
               Pourquoi choisir Misk Studios ?
             </h3>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-on-load animate-fade-in-up animation-delay-200">
               Des installations modernes et un service professionnel pour donner vie à vos projets créatifs
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center feature-card p-6 rounded-xl bg-white shadow-lg animate-on-load animate-scale-in animation-delay-100">
+              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 feature-icon">
+                <svg className="w-8 h-8" style={{color: '#fada00'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Équipement Professionnel</h4>
-              <p className="text-gray-600">
+              <h4 className="text-xl font-semibold text-gray-900 mb-2 font-sf">Équipement Professionnel</h4>
+              <p className="text-gray-600 leading-relaxed">
                 Matériel audio et vidéo de dernière génération pour une qualité irréprochable
               </p>
             </div>
             
-            <div className="text-center">
-              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center feature-card p-6 rounded-xl bg-white shadow-lg animate-on-load animate-scale-in animation-delay-200">
+              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 feature-icon">
                 <svg className="w-8 h-8" style={{color: '#fada00'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Espaces Acoustiques</h4>
-              <p className="text-gray-600">
+              <h4 className="text-xl font-semibold text-gray-900 mb-2 font-sf">Espaces Acoustiques</h4>
+              <p className="text-gray-600 leading-relaxed">
                 Studios traités acoustiquement pour un enregistrement optimal sans parasites
               </p>
             </div>
             
-            <div className="text-center">
-              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center feature-card p-6 rounded-xl bg-white shadow-lg animate-on-load animate-scale-in animation-delay-300">
+              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 feature-icon">
                 <svg className="w-8 h-8" style={{color: '#fada00'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 11-9.75 9.75A9.75 9.75 0 0112 2.25z" />
                 </svg>
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Support Technique</h4>
-              <p className="text-gray-600">
+              <h4 className="text-xl font-semibold text-gray-900 mb-2 font-sf">Support Technique</h4>
+              <p className="text-gray-600 leading-relaxed">
                 Assistance technique disponible pour vous accompagner dans vos productions
               </p>
             </div>
