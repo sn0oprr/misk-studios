@@ -155,16 +155,46 @@ export default function Home() {
             </div>
             <div className="relative animate-on-load animate-fade-in-right animation-delay-200">
               <div className="relative h-96 w-full rounded-2xl overflow-hidden shadow-2xl hover-lift">
-                <Image
-                  src="https://picsum.photos/seed/hero-studio/800/600"
-                  alt="Studio professionnel Misk Studios"
-                  fill
-                  className="object-cover transition-transform duration-700 hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                />
-                {/* Gradient overlay for better contrast */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                >
+                  <source src="/videos/misk-studios-bg-video.mp4" type="video/mp4" />
+                  {/* Fallback image if video fails to load */}
+                  <Image
+                    src="https://picsum.photos/seed/hero-studio/800/600"
+                    alt="Studio professionnel Misk Studios"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </video>
+                {/* Enhanced gradient overlay for better text contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+                
+                {/* Video controls overlay (optional) */}
+                <div className="absolute bottom-4 right-4 opacity-0 hover:opacity-100 transition-opacity">
+                  <button 
+                    className="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                    onClick={(e) => {
+                      const video = e.currentTarget.parentElement?.parentElement?.querySelector('video');
+                      if (video) {
+                        if (video.paused) {
+                          video.play();
+                        } else {
+                          video.pause();
+                        }
+                      }
+                    }}
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
               {/* Floating cards with animations */}
               <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg animate-float hover-lift">
