@@ -19,3 +19,27 @@ export interface BookingFormData {
   studioId: string;
   studioNom: string;
 }
+
+export interface Equipment {
+  id: number;
+  name: string;
+  type: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface EquipmentFormData {
+  name: string;
+  type: string;
+  description: string;
+}
+
+export type EquipmentType = 
+  | 'Audio'
+  | 'Video'
+  | 'Lighting'
+  | 'Computer'
+  | 'Recording'
+  | 'Streaming'
+  | 'Other';

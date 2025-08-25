@@ -20,9 +20,6 @@ export const equipmentsTable = pgTable('equipments', {
   name: text('name').notNull(),
   type: text('type').notNull(),
   description: text('description'),
-  studioId: text('studio_id')
-    .notNull()
-    .references(() => studiosTable.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at')
     .notNull()
