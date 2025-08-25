@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
+import ClientWrapper from '@/components/ClientWrapper';
 import "./globals.css";
 
 // SF UI Display isn't available on Google Fonts, so we'll use Inter as a close alternative
@@ -59,7 +60,9 @@ export default function RootLayout({
       <body
         className={`${sfUIDisplay.variable} ${montserrat.variable} antialiased font-sf`}
       >
-        {children}
+        <ClientWrapper>
+          {children}
+        </ClientWrapper>
         <Toaster
           position="top-right"
           toastOptions={{

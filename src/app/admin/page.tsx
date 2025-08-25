@@ -1,6 +1,7 @@
 'use client';
 
 import AdminLayout from '@/components/AdminLayout';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 const AdminDashboard = () => {
   const stats = [
@@ -116,7 +117,8 @@ const AdminDashboard = () => {
   };
 
   return (
-    <AdminLayout>
+    <ProtectedRoute>
+      <AdminLayout>
       <div className="space-y-6">
         {/* Welcome Section */}
         <div className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 rounded-lg p-6 text-black">
@@ -307,6 +309,7 @@ const AdminDashboard = () => {
         </div>
       </div>
     </AdminLayout>
+    </ProtectedRoute>
   );
 };
 

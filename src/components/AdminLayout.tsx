@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -10,10 +11,18 @@ interface AdminLayoutProps {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = useAuth();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push('/admin/login');
   };
 
   const menuItems = [
@@ -162,7 +171,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               </button>
 
               {/* Profile Dropdown */}
-              <div className="flex items-center space-x-3">
+              <div className="relative flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                   <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -172,9 +181,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   <p className="text-sm font-medium text-gray-900">Administrateur</p>
                   <p className="text-xs text-gray-500">admin@misk-studios.com</p>
                 </div>
-                <button className="text-gray-600 hover:text-gray-900">
+                <button 
+                  onClick={() => setShowLogoutModal(true)}
+                  className="text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100"
+                  title="Déconnexion"
+                >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
                 </button>
               </div>
@@ -198,6 +211,39 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           {children}
         </main>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 15.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">Confirmer la déconnexion</h3>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Êtes-vous sûr de vouloir vous déconnecter ? Vous devrez vous reconnecter pour accéder au tableau de bord.
+            </p>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Se déconnecter
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
