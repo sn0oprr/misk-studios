@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
-import { studiosTable } from '@/db/schema';
+import { studiosTable, equipmentsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
 // GET - Fetch single studio by ID
@@ -35,7 +35,28 @@ export const GET = async (
       );
     }
 
-    return NextResponse.json(studio[0], { status: 200 });
+    // Get all equipments to create a lookup map
+    const equipments = await db
+      .select({
+        id: equipmentsTable.id,
+        name: equipmentsTable.name,
+      })
+      .from(equipmentsTable);
+
+    // Create a map for quick equipment lookup
+    const equipmentMap = new Map(
+      equipments.map(eq => [eq.id.toString(), eq.name])
+    );
+
+    // Transform studio to include equipment names instead of IDs
+    const studioWithEquipmentNames = {
+      ...studio[0],
+      equipment: (studio[0].equipment as string[]).map(equipmentId => 
+        equipmentMap.get(equipmentId) || `Equipment ${equipmentId}`
+      )
+    };
+
+    return NextResponse.json(studioWithEquipmentNames, { status: 200 });
   } catch (error) {
     console.error('Error fetching studio:', error);
     return NextResponse.json(

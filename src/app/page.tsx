@@ -1,12 +1,13 @@
 import { db } from '@/db';
-import { studiosTable } from '@/db/schema';
+import { studiosTable, equipmentsTable } from '@/db/schema';
 import { desc } from 'drizzle-orm';
 import { Studio } from '@/types';
 import HomeClient from '@/components/HomeClient';
 
-// Server-side function to fetch studios
+// Server-side function to fetch studios with equipment names
 async function getStudios(): Promise<Studio[]> {
   try {
+    // First, get all studios
     const studios = await db
       .select({
         id: studiosTable.id,
@@ -23,7 +24,28 @@ async function getStudios(): Promise<Studio[]> {
       .from(studiosTable)
       .orderBy(desc(studiosTable.createdAt));
 
-    return studios as Studio[];
+    // Get all equipments to create a lookup map
+    const equipments = await db
+      .select({
+        id: equipmentsTable.id,
+        name: equipmentsTable.name,
+      })
+      .from(equipmentsTable);
+
+    // Create a map for quick equipment lookup
+    const equipmentMap = new Map(
+      equipments.map(eq => [eq.id.toString(), eq.name])
+    );
+
+    // Transform studios to include equipment names instead of IDs
+    const studiosWithEquipmentNames = studios.map(studio => ({
+      ...studio,
+      equipment: (studio.equipment as string[]).map(equipmentId => 
+        equipmentMap.get(equipmentId) || `Equipment ${equipmentId}`
+      )
+    }));
+
+    return studiosWithEquipmentNames as Studio[];
   } catch (error) {
     console.error('Error fetching studios:', error);
     return []; // Return empty array on error
