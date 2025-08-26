@@ -1,13 +1,34 @@
 export interface Studio {
   id: string;
-  nom: string;
-  superficie: number;
-  categorie: 'Podcast' | 'Enregistrement' | 'Streaming' | 'Production';
+  name: string;
+  area: number;
+  category: 'Podcast' | 'Enregistrement' | 'Streaming' | 'Production';
   description: string;
   images: string[];
-  equipements: string[];
-  prix: string;
+  equipment: string[];
+  price: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+export interface StudioFormData {
+  name: string;
+  area: number;
+  category: 'Podcast' | 'Enregistrement' | 'Streaming' | 'Production';
+  description: string;
+  images: string[];
+  equipment: number[];
+  price: string;
+}
+
+export interface EquipmentOption {
+  id: number;
+  name: string;
+  type: string;
+  description?: string;
+}
+
+export type StudioCategory = 'Podcast' | 'Enregistrement' | 'Streaming' | 'Production';
 
 export interface BookingFormData {
   prenom: string;
