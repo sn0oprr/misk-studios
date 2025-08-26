@@ -1,7 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useRef } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,8 +16,6 @@ interface BookingModalProps {
 }
 
 export default function BookingModal({ isOpen, onClose, studio }: BookingModalProps) {
-  const cancelButtonRef = useRef(null);
-  
   const {
     register,
     handleSubmit,
@@ -44,6 +41,18 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
     }
   }, [isOpen, reset]);
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
   const onSubmit = async (data: BookingFormData) => {
     try {
       const response = await fetch('/api/book', {
@@ -67,105 +76,89 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
     }
   };
 
-  if (!studio) return null;
+  if (!studio || !isOpen) return null;
 
   return (
-    <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-50"
-        initialFocus={cancelButtonRef}
-        onClose={onClose}
+    <div
+      className="fixed inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center z-50 p-4 opacity-0"
+      onClick={handleBackdropClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={-1}
+      style={{
+        animation: 'fadeIn 0.2s ease-out forwards'
+      }}
+    >
+      <div
+        className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform scale-95 translate-y-4 opacity-0"
+        style={{
+          animation: 'modalSlideIn 0.2s ease-out 0.1s forwards'
+        }}
       >
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-md transition-opacity" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        <div className="relative px-4 pb-4 pt-5 sm:p-6">
+          <div className="absolute right-0 top-0 pr-4 pt-4">
+            <button
+              type="button"
+              className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              onClick={onClose}
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl sm:p-6">
-                <div className="absolute right-0 top-0 pr-4 pt-4">
-                  <button
-                    type="button"
-                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    onClick={onClose}
-                    ref={cancelButtonRef}
-                  >
-                    <span className="sr-only">Fermer</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
+              <span className="sr-only">Fermer</span>
+              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Column - Studio Info */}
+            <div>
+              <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">
+                {studio.name}
+              </h3>
+              
+              <PhotoGallery images={studio.images} alt={studio.name} />
+              
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Catégorie:</span>
+                  <span className="px-2 py-1 bg-yellow-100 text-sm rounded" style={{color: '#fada00'}}>
+                    {studio.category}
+                  </span>
                 </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Superficie:</span>
+                  <span className="text-sm font-medium">{studio.area}m²</span>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Prix:</span>
+                  <span className="text-sm font-medium" style={{color: '#fada00'}}>{studio.price}</span>
+                </div>
+              </div>
+              
+              <div className="mt-4">
+                <h4 className="text-sm font-medium text-gray-900 mb-2">Description:</h4>
+                <p className="text-sm text-gray-700">{studio.description}</p>
+              </div>
+              
+              <div className="mt-4">
+                <h4 className="text-sm font-medium text-gray-900 mb-2">Équipements:</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {studio.equipment.map((equipement, index) => (
+                    <li key={index} className="flex items-center">
+                      <span className="w-2 h-2 rounded-full mr-2 flex-shrink-0" style={{backgroundColor: '#fada00'}}></span>
+                      {equipement}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Left Column - Studio Info */}
-                  <div>
-                    <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 mb-4">
-                      {studio.name}
-                    </Dialog.Title>
-                    
-                    <PhotoGallery images={studio.images} alt={studio.name} />
-                    
-                    <div className="mt-4 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Catégorie:</span>
-                        <span className="px-2 py-1 bg-yellow-100 text-sm rounded" style={{color: '#fada00'}}>
-                          {studio.category}
-                        </span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Superficie:</span>
-                        <span className="text-sm font-medium">{studio.area}m²</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Prix:</span>
-                        <span className="text-sm font-medium" style={{color: '#fada00'}}>{studio.price}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <h4 className="text-sm font-medium text-gray-900 mb-2">Description:</h4>
-                      <p className="text-sm text-gray-700">{studio.description}</p>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <h4 className="text-sm font-medium text-gray-900 mb-2">Équipements:</h4>
-                      <ul className="text-sm text-gray-700 space-y-1">
-                        {studio.equipment.map((equipement, index) => (
-                          <li key={index} className="flex items-center">
-                            <span className="w-2 h-2 rounded-full mr-2 flex-shrink-0" style={{backgroundColor: '#fada00'}}></span>
-                            {equipement}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Right Column - Booking Form */}
-                  <div>
-                    <h4 className="text-lg font-medium text-gray-900 mb-4">
-                      Demande de réservation
-                    </h4>
-                    
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Right Column - Booking Form */}
+            <div>
+              <h4 className="text-lg font-medium text-gray-900 mb-4">
+                Demande de réservation
+              </h4>
+              
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label htmlFor="prenom" className="block text-sm font-medium text-gray-700 mb-1">
@@ -269,9 +262,8 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                       <div className="flex space-x-3 pt-4">
                         <button
                           type="button"
-                          className="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                          className="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400"
                           onClick={onClose}
-                          style={{'--tw-ring-color': '#fada00'}}
                         >
                           Annuler
                         </button>
@@ -285,15 +277,12 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                         >
                           {isSubmitting ? 'Envoi...' : 'Envoyer la demande'}
                         </button>
-                      </div>
-                    </form>
-                  </div>
                 </div>
-              </Dialog.Panel>
-            </Transition.Child>
+              </form>
+            </div>
           </div>
         </div>
-      </Dialog>
-    </Transition.Root>
+      </div>
+    </div>
   );
 }
