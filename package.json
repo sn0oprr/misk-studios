@@ -7,7 +7,14 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "npx tsx src/db/seed.ts"
+    "db:seed": "npx tsx src/db/seed.ts",
+    "docker:build": "docker build -t misk-studios .",
+    "docker:run": "docker run -p ${APP_PORT:-3000}:3000 -v uploads_data:/app/public/uploads misk-studios",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "docker:dev-down": "docker-compose -f docker-compose.dev.yml down",
+    "docker:logs": "docker-compose logs -f"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",

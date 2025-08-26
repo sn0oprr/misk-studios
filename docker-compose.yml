@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # Next.js Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # DATABASE_URL should be set via .env file or environment variables
+      # - DATABASE_URL=your_supabase_database_url
+    volumes:
+      - uploads_data:/app/public/uploads
+    restart: unless-stopped
+
+volumes:
+  uploads_data:
