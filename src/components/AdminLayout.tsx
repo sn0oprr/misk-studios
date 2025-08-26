@@ -203,8 +203,18 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+        <div 
+          className="fixed inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center z-50 opacity-0"
+          style={{
+            animation: 'fadeIn 0.2s ease-out forwards'
+          }}
+        >
+          <div 
+            className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 transform scale-95 translate-y-4 opacity-0"
+            style={{
+              animation: 'modalSlideIn 0.2s ease-out 0.1s forwards'
+            }}
+          >
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
                 <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

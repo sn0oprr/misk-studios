@@ -232,12 +232,20 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center z-50 p-4 opacity-0 animate-fade-in"
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
+      style={{
+        animation: 'fadeIn 0.2s ease-out forwards'
+      }}
     >
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div 
+        className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto transform scale-95 translate-y-4 opacity-0"
+        style={{
+          animation: 'modalSlideIn 0.2s ease-out 0.1s forwards'
+        }}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900 font-sf">
