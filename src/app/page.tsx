@@ -54,6 +54,9 @@ async function getStudios(): Promise<Studio[]> {
   }
 }
 
+// Revalidate every 60 seconds for ISR, but revalidatePath will update immediately
+export const revalidate = 60;
+
 export default async function Home() {
   // Fetch studios on server-side
   const studios = await getStudios();

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { db } from '@/db';
 import { studiosTable, equipmentsTable } from '@/db/schema';
 import { desc } from 'drizzle-orm';
@@ -120,6 +121,9 @@ export const POST = async (request: NextRequest) => {
       })
       .returning();
 
+    // Revalidate the home page to show the new studio
+    revalidatePath('/');
+    
     return NextResponse.json(newStudio[0], { status: 201 });
   } catch (error) {
     console.error('Error creating studio:', error);

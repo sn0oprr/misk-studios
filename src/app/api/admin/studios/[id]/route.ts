@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { db } from '@/db';
 import { studiosTable, equipmentsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -148,6 +149,9 @@ export const PUT = async (
       .where(eq(studiosTable.id, id))
       .returning();
 
+    // Revalidate the home page to show the updated studio
+    revalidatePath('/');
+    
     return NextResponse.json(updatedStudio[0], { status: 200 });
   } catch (error) {
     console.error('Error updating studio:', error);
@@ -184,6 +188,9 @@ export const DELETE = async (
     await db
       .delete(studiosTable)
       .where(eq(studiosTable.id, id));
+
+    // Revalidate the home page to remove the deleted studio
+    revalidatePath('/');
 
     return NextResponse.json(
       { message: 'Studio deleted successfully' },
