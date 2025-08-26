@@ -195,6 +195,10 @@ docker-compose up -d
    
    # Rebuild without cache
    docker-compose build --no-cache
+   
+   # If TypeScript errors during build
+   npm run audit:check
+   npm run audit:fix
    ```
 
 4. **Volume issues in development**
@@ -202,6 +206,18 @@ docker-compose up -d
    # Remove volumes and rebuild
    docker-compose -f docker-compose.dev.yml down -v
    docker-compose -f docker-compose.dev.yml up -d --build
+   ```
+
+5. **NPM audit warnings**
+   ```bash
+   # Check for vulnerabilities
+   npm run audit:check
+   
+   # Fix automatically (may introduce breaking changes)
+   npm run audit:fix
+   
+   # Force fix (use with caution)
+   npm audit fix --force
    ```
 
 ### Logs and Debugging

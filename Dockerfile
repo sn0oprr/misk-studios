@@ -13,12 +13,16 @@ RUN npm ci --only=production && npm cache clean --force
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Copy dependencies from previous stage
-COPY --from=deps /app/node_modules ./node_modules
+# Copy package files and install ALL dependencies (including devDependencies for build)
+COPY package.json package-lock.json* ./
+RUN npm ci && npm cache clean --force
+
+# Copy source code
 COPY . .
 
 # Build the application
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
 RUN npm run build
 
 # Stage 3: Runner
