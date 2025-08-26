@@ -130,7 +130,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Prix:</span>
-                  <span className="text-sm font-medium" style={{color: '#fada00'}}>{studio.price}</span>
+                  <span className="text-sm font-medium" style={{color: '#fada00'}}>{(typeof studio.price === 'number' ? studio.price : parseFloat(studio.price) || 0).toFixed(2)} TND/heure</span>
                 </div>
               </div>
               

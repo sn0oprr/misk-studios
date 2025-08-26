@@ -53,7 +53,9 @@ export const GET = async (
       ...studio[0],
       equipment: (studio[0].equipment as string[]).map(equipmentId => 
         equipmentMap.get(equipmentId) || `Equipment ${equipmentId}`
-      )
+      ),
+      // Ensure price is a number for consistency
+      price: typeof studio[0].price === 'string' ? parseFloat(studio[0].price) || 0 : studio[0].price
     };
 
     return NextResponse.json(studioWithEquipmentNames, { status: 200 });
@@ -77,7 +79,7 @@ export const PUT = async (
     const { name, area, category, description, images, equipment, price } = body;
 
     // Validate required fields
-    if (!name || !area || !category || !description || !price) {
+    if (!name || !area || !category || !description || price === undefined || price === null) {
       return NextResponse.json(
         { error: 'Name, area, category, description, and price are required' },
         { status: 400 }
@@ -88,6 +90,15 @@ export const PUT = async (
     if (typeof area !== 'number' || area <= 0) {
       return NextResponse.json(
         { error: 'Area must be a positive number' },
+        { status: 400 }
+      );
+    }
+
+    // Validate that price is a valid number
+    const priceNumber = typeof price === 'string' ? parseFloat(price) : price;
+    if (isNaN(priceNumber) || priceNumber < 0) {
+      return NextResponse.json(
+        { error: 'Price must be a valid positive number' },
         { status: 400 }
       );
     }
@@ -131,7 +142,7 @@ export const PUT = async (
         description,
         images: processedImages,
         equipment: equipmentStrings,
-        price,
+        price: priceNumber,
         updatedAt: new Date(),
       })
       .where(eq(studiosTable.id, id))

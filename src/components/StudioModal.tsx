@@ -24,7 +24,7 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
     description: '',
     images: [],
     equipment: [],
-    price: '',
+    price: 0,
   });
   
   const [loading, setLoading] = useState(false);
@@ -180,8 +180,8 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
       return false;
     }
     
-    if (!formData.price.trim()) {
-      setError('Le prix est requis');
+    if (!formData.price || formData.price <= 0) {
+      setError('Le prix doit être un nombre positif');
       return false;
     }
     
@@ -209,7 +209,7 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
         description: '',
         images: [],
         equipment: [],
-        price: '',
+        price: 0,
       });
     } catch (err: any) {
       setError(err.message || 'Une erreur est survenue');
@@ -338,11 +338,13 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
               </label>
               <input
                 id="studio-price"
-                type="text"
+                type="number"
+                min="0"
+                step="0.01"
                 value={formData.price}
-                onChange={(e) => handleInputChange('price', e.target.value)}
+                onChange={(e) => handleInputChange('price', parseFloat(e.target.value) || 0)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                placeholder="Ex: 150 TND/heure"
+                placeholder="Ex: 150.00"
                 required
               />
             </div>

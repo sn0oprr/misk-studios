@@ -42,7 +42,9 @@ async function getStudios(): Promise<Studio[]> {
       ...studio,
       equipment: (studio.equipment as string[]).map(equipmentId => 
         equipmentMap.get(equipmentId) || `Equipment ${equipmentId}`
-      )
+      ),
+      // Ensure price is a number for consistency
+      price: typeof studio.price === 'string' ? parseFloat(studio.price) || 0 : studio.price
     }));
 
     return studiosWithEquipmentNames as Studio[];

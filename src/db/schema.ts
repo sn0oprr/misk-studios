@@ -1,4 +1,4 @@
-import { integer, pgTable, serial, text, timestamp, boolean, numeric, json } from 'drizzle-orm/pg-core';
+import { integer, pgTable, serial, text, timestamp, boolean, numeric, json, decimal } from 'drizzle-orm/pg-core';
 
 export const studiosTable = pgTable('studios', {
   id: text('id').primaryKey(),
@@ -8,7 +8,7 @@ export const studiosTable = pgTable('studios', {
   description: text('description').notNull(),
   images: json('images').$type<string[]>().notNull(),
   equipment: json('equipment').$type<string[]>().notNull(),
-  price: text('price').notNull(),
+  price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at')
     .notNull()

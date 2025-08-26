@@ -34,7 +34,7 @@ export default function StudioCard({ studio, onReserve }: StudioCardProps) {
             Superficie: {studio.area}m²
           </span>
           <span className="text-sm font-medium" style={{color: '#fada00'}}>
-            {studio.price}
+            {(typeof studio.price === 'number' ? studio.price : parseFloat(studio.price) || 0).toFixed(2)} TND/heure
           </span>
         </div>
         

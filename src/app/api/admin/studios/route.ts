@@ -41,7 +41,9 @@ export const GET = async () => {
       ...studio,
       equipment: (studio.equipment as string[]).map(equipmentId => 
         equipmentMap.get(equipmentId) || `Equipment ${equipmentId}`
-      )
+      ),
+      // Ensure price is a number for consistency
+      price: typeof studio.price === 'string' ? parseFloat(studio.price) || 0 : studio.price
     }));
 
     return NextResponse.json(studiosWithEquipmentNames, { status: 200 });
@@ -61,7 +63,7 @@ export const POST = async (request: NextRequest) => {
     const { name, area, category, description, images, equipment, price } = body;
 
     // Validate required fields
-    if (!name || !area || !category || !description || !price) {
+    if (!name || !area || !category || !description || price === undefined || price === null) {
       return NextResponse.json(
         { error: 'Name, area, category, description, and price are required' },
         { status: 400 }
@@ -72,6 +74,15 @@ export const POST = async (request: NextRequest) => {
     if (typeof area !== 'number' || area <= 0) {
       return NextResponse.json(
         { error: 'Area must be a positive number' },
+        { status: 400 }
+      );
+    }
+
+    // Validate that price is a valid number
+    const priceNumber = typeof price === 'string' ? parseFloat(price) : price;
+    if (isNaN(priceNumber) || priceNumber < 0) {
+      return NextResponse.json(
+        { error: 'Price must be a valid positive number' },
         { status: 400 }
       );
     }
@@ -105,7 +116,7 @@ export const POST = async (request: NextRequest) => {
         description,
         images: processedImages,
         equipment: equipmentStrings,
-        price,
+        price: priceNumber,
       })
       .returning();
 

@@ -6,7 +6,7 @@ export interface Studio {
   description: string;
   images: string[];
   equipment: string[];
-  price: string;
+  price: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,7 +18,7 @@ export interface StudioFormData {
   description: string;
   images: string[];
   equipment: number[];
-  price: string;
+  price: number;
 }
 
 export interface EquipmentOption {
