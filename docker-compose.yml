@@ -8,11 +8,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${APP_PORT:-3000}:3000"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
       - PORT=3000
-      # DATABASE_URL should be set via .env file or environment variables
-      # - DATABASE_URL=your_supabase_database_url
     volumes:
       - uploads_data:/app/public/uploads
     restart: unless-stopped

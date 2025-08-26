@@ -18,7 +18,7 @@ build
 # Debug
 debug.log
 
-# Local env files
+# Local env files (excluded for security - use docker-compose environment instead)
 .env
 .env.local
 .env.development.local

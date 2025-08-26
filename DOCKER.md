@@ -105,20 +105,24 @@ docker run -p 3000:3000 -v $(pwd):/app misk-studios-dev
 
 ### Environment Variables
 
-Create a `.env` file in your project root with:
+**IMPORTANT**: Create a `.env` file in your project root with your environment variables:
 
 ```bash
 # Supabase Database connection
 DATABASE_URL=postgresql://postgres:[YOUR_PASSWORD]@[YOUR_PROJECT_REF].supabase.co:5432/postgres
 
-# Node environment
-NODE_ENV=production
-
 # Application port (optional, defaults to 3000)
 APP_PORT=3000
 
 # Add any other environment variables your app needs
+# NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
+
+**Security Note**: 
+- `.env` files are excluded from Docker images for security (see `.dockerignore`)
+- Docker Compose reads your `.env` file and passes variables to the container at runtime
+- This is the recommended approach for production deployments
 
 ### Database Configuration
 
@@ -188,7 +192,22 @@ docker-compose up -d
    docker-compose logs app
    ```
 
-3. **Build failures**
+3. **Environment variables not loading**
+   ```bash
+   # Verify .env file exists in project root
+   ls -la .env
+   
+   # Check if variables are being passed to container
+   docker-compose exec app env | grep DATABASE_URL
+   
+   # Check container logs for environment issues
+   docker-compose logs app
+   
+   # Restart containers to reload .env file
+   docker-compose down && docker-compose up -d
+   ```
+
+4. **Build failures**
    ```bash
    # Clean Docker cache
    docker system prune -a
@@ -201,14 +220,14 @@ docker-compose up -d
    npm run audit:fix
    ```
 
-4. **Volume issues in development**
+5. **Volume issues in development**
    ```bash
    # Remove volumes and rebuild
    docker-compose -f docker-compose.dev.yml down -v
    docker-compose -f docker-compose.dev.yml up -d --build
    ```
 
-5. **NPM audit warnings**
+6. **NPM audit warnings**
    ```bash
    # Check for vulnerabilities
    npm run audit:check
