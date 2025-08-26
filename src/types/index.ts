@@ -84,3 +84,27 @@ export interface BookingWithStudioInfo extends Booking {
   studioArea?: number;
   studioPrice?: number;
 }
+
+export interface DashboardStats {
+  studiosCount: number;
+  bookingsCount: number;
+  equipmentsCount: number;
+}
+
+export interface DashboardBooking {
+  id: number;
+  studioId: string;
+  studioName: string | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  city: string;
+  message?: string;
+  createdAt: Date;
+}
+
+export interface DashboardData {
+  stats: DashboardStats;
+  latestBookings: DashboardBooking[];
+}

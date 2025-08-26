@@ -201,7 +201,7 @@ export default function BookingDetailsModal({
                     )}
                     {booking.studioPrice && (
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Prix</label>
+                        <label className="block text-sm font-medium text-gray-700">Prix /hr</label>
                         <p className="text-sm text-gray-900">
                           {(typeof booking.studioPrice === 'number' ? booking.studioPrice : parseFloat(booking.studioPrice) || 0).toFixed(2)} TND/heure
                         </p>

@@ -181,7 +181,7 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
     }
     
     if (!formData.price || formData.price <= 0) {
-      setError('Le prix doit être un nombre positif');
+      setError('Le prix /hr doit être un nombre positif');
       return false;
     }
     
@@ -334,7 +334,7 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
             {/* Price Field */}
             <div>
               <label htmlFor="studio-price" className="block text-sm font-medium text-gray-700 mb-2">
-                Prix *
+                Prix /hr *
               </label>
               <input
                 id="studio-price"
