@@ -136,7 +136,7 @@ const StudiosPage = () => {
                   Gestion des Studios
                 </h1>
                 <p className="text-black/80">
-                  Gérez vos studios d'enregistrement et leurs configurations
+                  Gérez vos studios d&apos;enregistrement et leurs configurations
                 </p>
               </div>
               <button

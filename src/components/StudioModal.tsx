@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Studio, StudioFormData, StudioCategory, EquipmentOption } from '@/types';
 
 interface StudioModalProps {
@@ -137,9 +138,9 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
       }));
 
       setUploadingImages([]);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error uploading images:', err);
-      setError(err.message || 'Failed to upload images');
+      setError(err instanceof Error ? err.message : 'Failed to upload images');
       setUploadingImages([]);
     }
   };
@@ -211,8 +212,8 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
         equipment: [],
         price: 0,
       });
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {
       setLoading(false);
     }
@@ -394,7 +395,7 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
                         <p className="text-sm text-gray-600">
                           <span className="font-medium text-yellow-600">Cliquez pour télécharger</span> ou glissez-déposez
                         </p>
-                        <p className="text-xs text-gray-500">PNG, JPG, GIF jusqu'à 10MB</p>
+                        <p className="text-xs text-gray-500">PNG, JPG, GIF jusqu&apos;à 10MB</p>
                       </>
                     )}
                   </div>
@@ -417,10 +418,12 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
                   {formData.images.map((image, index) => (
                     <div key={index} className="relative group">
                       <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                        <img
+                        <Image
                           src={image as string}
                           alt={`Studio image ${index + 1}`}
-                          className="w-full h-full object-cover"
+                          fill
+                          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                          className="object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.src = '/images/placeholder-image.jpg';
@@ -461,7 +464,7 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     <p>Aucun équipement disponible</p>
-                    <p className="text-xs">Créez d'abord des équipements</p>
+                    <p className="text-xs">Créez d&apos;abord des équipements</p>
                   </div>
                 ) : (
                   <div className="divide-y divide-gray-200">

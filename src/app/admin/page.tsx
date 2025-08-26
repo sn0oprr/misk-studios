@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import { DashboardData, DashboardBooking } from '@/types';
+import { DashboardData } from '@/types';
 
 const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
@@ -28,8 +28,8 @@ const AdminDashboard = () => {
       
       const data = await response.json();
       setDashboardData(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load dashboard data');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load dashboard data');
     } finally {
       setLoading(false);
     }

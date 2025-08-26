@@ -87,8 +87,8 @@ const EquipmentModal = ({ equipment, onClose, onSubmit }: EquipmentModalProps) =
         type: 'Audio',
         description: '',
       });
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {
       setLoading(false);
     }
@@ -155,7 +155,7 @@ const EquipmentModal = ({ equipment, onClose, onSubmit }: EquipmentModalProps) =
           {/* Name Field */}
           <div>
             <label htmlFor="equipment-name" className="block text-sm font-medium text-gray-700 mb-2">
-              Nom de l'équipement *
+              Nom de l&apos;équipement *
             </label>
             <input
               id="equipment-name"
@@ -171,7 +171,7 @@ const EquipmentModal = ({ equipment, onClose, onSubmit }: EquipmentModalProps) =
           {/* Type Field */}
           <div>
             <label htmlFor="equipment-type" className="block text-sm font-medium text-gray-700 mb-2">
-              Type d'équipement *
+              Type d&apos;équipement *
             </label>
             <select
               id="equipment-type"

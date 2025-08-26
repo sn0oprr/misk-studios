@@ -25,7 +25,7 @@ const AdminLogin = () => {
       } else {
         setError('Nom d\'utilisateur ou mot de passe incorrect');
       }
-    } catch (err) {
+    } catch {
       setError('Erreur de connexion. Veuillez réessayer.');
     } finally {
       setLoading(false);
@@ -58,7 +58,7 @@ const AdminLogin = () => {
 
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Nom d'utilisateur
+                Nom d&apos;utilisateur
               </label>
               <input
                 type="text"

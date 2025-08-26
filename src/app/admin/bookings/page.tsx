@@ -31,8 +31,8 @@ const BookingsPage = () => {
       
       const data = await response.json();
       setBookings(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load bookings');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load bookings');
     } finally {
       setLoading(false);
     }
@@ -58,8 +58,8 @@ const BookingsPage = () => {
         setBookings(prevBookings => 
           prevBookings.filter(booking => booking.id !== bookingId)
         );
-      } catch (err: any) {
-        setError(err.message || 'Failed to delete booking');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to delete booking');
       }
     }
   };
@@ -123,7 +123,7 @@ const BookingsPage = () => {
           </svg>
           <h3 className="mt-2 text-sm font-medium text-gray-900">Aucune réservation</h3>
           <p className="mt-1 text-sm text-gray-500">
-            Il n'y a pas encore de demandes de réservation.
+            Il n&apos;y a pas encore de demandes de réservation.
           </p>
         </div>
       ) : (

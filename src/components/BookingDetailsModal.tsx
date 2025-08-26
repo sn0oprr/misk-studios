@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { BookingWithStudioInfo } from '@/types';
 
@@ -22,14 +22,7 @@ export default function BookingDetailsModal({
   const [error, setError] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  // Fetch booking details when modal opens
-  useEffect(() => {
-    if (isOpen && bookingId) {
-      fetchBookingDetails();
-    }
-  }, [isOpen, bookingId]);
-
-  const fetchBookingDetails = async () => {
+  const fetchBookingDetails = useCallback(async () => {
     if (!bookingId) return;
     
     try {
@@ -44,12 +37,19 @@ export default function BookingDetailsModal({
       
       const data = await response.json();
       setBooking(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load booking details');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load booking details');
     } finally {
       setLoading(false);
     }
-  };
+  }, [bookingId]);
+
+  // Fetch booking details when modal opens
+  useEffect(() => {
+    if (isOpen && bookingId) {
+      fetchBookingDetails();
+    }
+  }, [isOpen, bookingId, fetchBookingDetails]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -80,8 +80,8 @@ export default function BookingDetailsModal({
         
         onDelete(bookingId);
         onClose();
-      } catch (err: any) {
-        setError(err.message || 'Failed to delete booking');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to delete booking');
       } finally {
         setDeleteLoading(false);
       }
