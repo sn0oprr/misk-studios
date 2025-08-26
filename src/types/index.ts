@@ -64,3 +64,23 @@ export type EquipmentType =
   | 'Recording'
   | 'Streaming'
   | 'Other';
+
+export interface Booking {
+  id: number;
+  studioId: string;
+  studioName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  city: string;
+  message?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface BookingWithStudioInfo extends Booking {
+  studioCategory?: string;
+  studioArea?: number;
+  studioPrice?: number;
+}
