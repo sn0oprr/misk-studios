@@ -207,7 +207,21 @@ docker-compose up -d
    docker-compose down && docker-compose up -d
    ```
 
-4. **Build failures**
+4. **File upload permission errors (EACCES)**
+   ```bash
+   # Check if uploads directory exists and has correct permissions
+   docker-compose exec app ls -la /app/public/uploads
+   
+   # If permission issues persist, rebuild containers
+   docker-compose down
+   docker-compose build --no-cache
+   docker-compose up -d
+   
+   # For development, ensure volume permissions are correct
+   sudo chown -R $USER:$USER ./public/uploads
+   ```
+
+5. **Build failures**
    ```bash
    # Clean Docker cache
    docker system prune -a
@@ -220,14 +234,14 @@ docker-compose up -d
    npm run audit:fix
    ```
 
-5. **Volume issues in development**
+6. **Volume issues in development**
    ```bash
    # Remove volumes and rebuild
    docker-compose -f docker-compose.dev.yml down -v
    docker-compose -f docker-compose.dev.yml up -d --build
    ```
 
-6. **NPM audit warnings**
+7. **NPM audit warnings**
    ```bash
    # Check for vulnerabilities
    npm run audit:check

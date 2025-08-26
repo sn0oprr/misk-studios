@@ -41,7 +41,10 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
-
+# Create uploads directory and set permissions
+RUN mkdir -p ./public/uploads
+RUN chown -R nextjs:nodejs ./public/uploads
+RUN chmod -R 755 ./public/uploads
 
 # Set correct permissions
 USER nextjs
