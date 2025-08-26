@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Studio } from '@/types';
+import { getImageUrl } from '@/lib/imageUtils';
 
 interface StudioCardProps {
   studio: Studio;
@@ -13,7 +14,7 @@ export default function StudioCard({ studio, onReserve }: StudioCardProps) {
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="relative h-48 w-full">
         <Image
-          src={studio.images[0]}
+          src={getImageUrl(studio.images[0])}
           alt={`${studio.name} - Studio ${studio.category}`}
           fill
           className="object-cover"

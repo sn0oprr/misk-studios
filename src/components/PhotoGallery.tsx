@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { getImageUrl } from '@/lib/imageUtils';
 
 interface PhotoGalleryProps {
   images: string[];
@@ -33,7 +34,7 @@ export default function PhotoGallery({ images, alt }: PhotoGalleryProps) {
       {/* Main Image */}
       <div className="relative h-64 w-full rounded-lg overflow-hidden bg-gray-100">
         <Image
-          src={images[currentIndex]}
+          src={getImageUrl(images[currentIndex])}
           alt={`${alt} - Image ${currentIndex + 1}`}
           fill
           className="object-cover"
@@ -83,7 +84,7 @@ export default function PhotoGallery({ images, alt }: PhotoGalleryProps) {
               aria-label={`Voir l'image ${index + 1}`}
             >
               <Image
-                src={image}
+                src={getImageUrl(image)}
                 alt={`${alt} - Miniature ${index + 1}`}
                 fill
                 className="object-cover"

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Studio, StudioFormData, StudioCategory, EquipmentOption } from '@/types';
+import { getImageUrl } from '@/lib/imageUtils';
 
 interface StudioModalProps {
   studio?: Studio | null;
@@ -419,7 +420,7 @@ const StudioModal = ({ studio, onClose, onSubmit }: StudioModalProps) => {
                     <div key={index} className="relative group">
                       <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                         <Image
-                          src={image as string}
+                          src={getImageUrl(image as string)}
                           alt={`Studio image ${index + 1}`}
                           fill
                           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
