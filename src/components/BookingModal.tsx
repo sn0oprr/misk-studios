@@ -33,7 +33,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
   useEffect(() => {
     if (studio) {
       setValue('studioId', studio.id);
-      setValue('studioNom', studio.nom);
+      setValue('studioNom', studio.name);
     }
   }, [studio, setValue]);
 
@@ -117,27 +117,27 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                   {/* Left Column - Studio Info */}
                   <div>
                     <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 mb-4">
-                      {studio.nom}
+                      {studio.name}
                     </Dialog.Title>
                     
-                    <PhotoGallery images={studio.images} alt={studio.nom} />
+                    <PhotoGallery images={studio.images} alt={studio.name} />
                     
                     <div className="mt-4 space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-600">Catégorie:</span>
                         <span className="px-2 py-1 bg-yellow-100 text-sm rounded" style={{color: '#fada00'}}>
-                          {studio.categorie}
+                          {studio.category}
                         </span>
                       </div>
                       
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-600">Superficie:</span>
-                        <span className="text-sm font-medium">{studio.superficie}m²</span>
+                        <span className="text-sm font-medium">{studio.area}m²</span>
                       </div>
                       
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-600">Prix:</span>
-                        <span className="text-sm font-medium" style={{color: '#fada00'}}>{studio.prix}</span>
+                        <span className="text-sm font-medium" style={{color: '#fada00'}}>{studio.price}</span>
                       </div>
                     </div>
                     
@@ -149,7 +149,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                     <div className="mt-4">
                       <h4 className="text-sm font-medium text-gray-900 mb-2">Équipements:</h4>
                       <ul className="text-sm text-gray-700 space-y-1">
-                        {studio.equipements.map((equipement, index) => (
+                        {studio.equipment.map((equipement, index) => (
                           <li key={index} className="flex items-center">
                             <span className="w-2 h-2 rounded-full mr-2 flex-shrink-0" style={{backgroundColor: '#fada00'}}></span>
                             {equipement}

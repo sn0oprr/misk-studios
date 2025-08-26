@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useActiveSection } from '@/hooks/useScrollAnimation';
 import { ScrollAnimateWrapper } from '@/components/ScrollAnimateWrapper';
-import { studios } from '@/data/studios';
 import { Studio } from '@/types';
 import StudioCard from '@/components/StudioCard';
 import BookingModal from '@/components/BookingModal';
@@ -13,7 +12,36 @@ import Footer from '@/components/Footer';
 export default function Home() {
   const [selectedStudio, setSelectedStudio] = useState<Studio | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [studios, setStudios] = useState<Studio[]>([]);
+  const [studiosLoading, setStudiosLoading] = useState(true);
+  const [studiosError, setStudiosError] = useState<string | null>(null);
   const activeSection = useActiveSection();
+
+  // Fetch studios from API
+  useEffect(() => {
+    const fetchStudios = async () => {
+      try {
+        setStudiosLoading(true);
+        const response = await fetch('/api/studios');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch studios');
+        }
+        
+        const data = await response.json();
+        setStudios(data);
+        setStudiosError(null);
+      } catch (err) {
+        console.error('Error fetching studios:', err);
+        setStudiosError('Failed to load studios');
+        setStudios([]); // Set empty array on error
+      } finally {
+        setStudiosLoading(false);
+      }
+    };
+
+    fetchStudios();
+  }, []);
 
   const handleReserve = (studio: Studio) => {
     setSelectedStudio(studio);
@@ -287,16 +315,49 @@ export default function Home() {
             </p>
           </ScrollAnimateWrapper>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {studios.map((studio, index) => (
-              <ScrollAnimateWrapper key={studio.id} delay={index * 100}>
-                <StudioCard
-                  studio={studio}
-                  onReserve={handleReserve}
-                />
-              </ScrollAnimateWrapper>
-            ))}
-          </div>
+          {/* Loading State */}
+          {studiosLoading && (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
+              <span className="ml-3 text-gray-600">Chargement des studios...</span>
+            </div>
+          )}
+
+          {/* Error State */}
+          {studiosError && !studiosLoading && (
+            <div className="text-center py-12">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+                <svg className="w-8 h-8 text-red-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-red-700 font-medium">Erreur de chargement</p>
+                <p className="text-red-600 text-sm">{studiosError}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Studios Grid */}
+          {!studiosLoading && !studiosError && studios.length === 0 && (
+            <div className="text-center py-12">
+              <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              <p className="text-gray-500 text-lg">Aucun studio disponible pour le moment</p>
+            </div>
+          )}
+
+          {!studiosLoading && !studiosError && studios.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {studios.map((studio, index) => (
+                <ScrollAnimateWrapper key={studio.id} delay={index * 100}>
+                  <StudioCard
+                    studio={studio}
+                    onReserve={handleReserve}
+                  />
+                </ScrollAnimateWrapper>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
