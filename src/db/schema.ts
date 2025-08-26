@@ -31,7 +31,6 @@ export const bookingsTable = pgTable('bookings', {
   studioId: text('studio_id')
     .notNull()
     .references(() => studiosTable.id, { onDelete: 'cascade' }),
-  studioName: text('studio_name').notNull(),
   firstName: text('first_name').notNull(),
   lastName: text('last_name').notNull(),
   email: text('email').notNull(),

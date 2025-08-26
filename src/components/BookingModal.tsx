@@ -168,7 +168,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                             type="text"
                             id="prenom"
                             {...register('prenom')}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                             placeholder="Votre prénom"
                           />
                           {errors.prenom && (
@@ -184,7 +184,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                             type="text"
                             id="nom"
                             {...register('nom')}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                             placeholder="Votre nom"
                           />
                           {errors.nom && (
@@ -201,7 +201,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                           type="email"
                           id="email"
                           {...register('email')}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                           placeholder="votre@email.com"
                         />
                         {errors.email && (
@@ -218,7 +218,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                             type="tel"
                             id="telephone"
                             {...register('telephone')}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                             placeholder="+216 XX XXX XXX"
                           />
                           {errors.telephone && (
@@ -234,7 +234,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                             type="text"
                             id="ville"
                             {...register('ville')}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                             placeholder="Tunis"
                           />
                           {errors.ville && (
@@ -251,7 +251,7 @@ export default function BookingModal({ isOpen, onClose, studio }: BookingModalPr
                           id="message"
                           rows={4}
                           {...register('message')}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none"
                           placeholder="Décrivez votre projet, dates souhaitées, durée..."
                         />
                         {errors.message && (

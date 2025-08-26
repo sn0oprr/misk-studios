@@ -15,6 +15,13 @@
       "when": 1756165064065,
       "tag": "0001_needy_sabra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1756171536385,
+      "tag": "0002_demonic_sabretooth",
+      "breakpoints": true
     }
   ]
 }

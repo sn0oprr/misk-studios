@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 import { bookingFormSchema } from '@/lib/validations';
+import { db } from '@/db';
+import { bookingsTable } from '@/db/schema';
 
 // Initialize Resend (fallback) - only if API key is available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -20,7 +22,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { prenom, nom, email, telephone, ville, message, studioNom } = validationResult.data;
+    const { prenom, nom, email, telephone, ville, message, studioId, studioNom } = validationResult.data;
+
+    // Save booking to database
+    try {
+      await db.insert(bookingsTable).values({
+        studioId: studioId,
+        firstName: prenom,
+        lastName: nom,
+        email: email,
+        phone: telephone,
+        city: ville,
+        message: message,
+      });
+      
+      console.log('Booking saved to database successfully');
+    } catch (dbError) {
+      console.error('Failed to save booking to database:', dbError);
+      return NextResponse.json(
+        { error: 'Erreur lors de la sauvegarde de la réservation' },
+        { status: 500 }
+      );
+    }
 
     // Email content
     const emailSubject = `Nouvelle demande de réservation - ${studioNom}`;
@@ -137,11 +160,16 @@ Envoyé depuis le site web Misk Studios
     }
 
     if (!emailSent) {
-      throw new Error('Both email services failed');
+      // Even if email failed, the booking was saved to database
+      console.error('Email sending failed, but booking was saved to database');
+      return NextResponse.json(
+        { message: 'Réservation sauvegardée avec succès. Notification par email en cours de traitement.' },
+        { status: 200 }
+      );
     }
 
     return NextResponse.json(
-      { message: 'Demande de réservation envoyée avec succès' },
+      { message: 'Demande de réservation envoyée et sauvegardée avec succès' },
       { status: 200 }
     );
 
